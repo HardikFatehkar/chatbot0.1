@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #chat { max-width: 600px; margin: 20px auto; border: 1px solid #ccc; padding: 10px; }
+        .message { margin: 5px 0; }
+        .options { display: flex; flex-wrap: wrap; }
+        .option { margin: 5px; padding: 10px; border: 1px solid #007BFF; border-radius: 5px; cursor: pointer; }
+        .option:hover { background-color: #e7f1ff; }
+    </style>
+</head>
+<body>
+    <div id="chat">
+        <div id="messages"></div>
+        <div id="options" class="options"></div>
+    </div>
+
+    <script>
+        async function sendRequest(option) {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ option })
+            });
+            const data = await response.json();
+            displayMessage(data.response);
+        }
+
+        function displayMessage(message) {
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML += `<div class="message">${message}</div>`;
+        }
+
+        function displayOptions(options) {
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            options.forEach(option => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.innerText = option.text;
+                div.onclick = () => sendRequest(option.value);
+                optionsDiv.appendChild(div);
+            });
+        }
+
+        // Initial options
+        displayOptions([
+            { text: 'Option 1', value: '1' },
+            { text: 'Option 2', value: '2' },
+            { text: 'Option 3', value: '3' },
+            { text: 'Option 4', value: '4' },
+            { text: 'Option 5', value: '5' },
+            { text: 'Option 6', value: '6' },
+            { text: 'Option 7', value: '7' },
+            { text: 'Option 8', value: '8' },
+            { text: 'Option 9', value: '9' },
+            { text: 'Option 10', value: '10' }
+        ]);
+    </script>
+</body>
+</html>
